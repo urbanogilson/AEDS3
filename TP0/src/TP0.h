@@ -1,24 +1,24 @@
-#ifndef TP0
-#define TP0
+#ifndef TP0_H
+#define TP0_H
 #define ALFABETO 26
 
-typedef struct NO
+typedef struct No
 {
 	bool palavra;
 	char letra;
 	int ocorrencias;
-	struct NO* Caracteres[ALFABETO];
-}NO;
+	struct No *caracteres[ALFABETO];
+} No;
 
-typedef struct NO* Trie;
+typedef struct No *Trie;
 
-NO* cria_NO(char c);
-Trie* cria_Trie();
-int indice_Trie(char c);
-int insere_Trie(Trie* raiz, char* texto);
-int busca_Trie(Trie* raiz, char* texto);
-int ocorrencias_Trie(Trie* raiz, char* texto);
-void libera_No(NO* no);
-void libera_Trie(Trie* raiz);
+No *no_cria(char c);
+Trie *trie_cria();
+int trie_insere(Trie *raiz, char *texto);
+int trie_busca(Trie *raiz, char *texto);
+int trie_ocorrencias(Trie *raiz, char *texto);
+int trie_indice(char c);
+void no_libera(No *no);
+void trie_libera(Trie *raiz);
 
-#endif // TP0
+#endif // TP0_H

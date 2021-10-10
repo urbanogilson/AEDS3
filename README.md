@@ -1,44 +1,53 @@
-# AEDS3 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/urbanogilson/AEDS3/blob/master/LICENSE.md)
+# AEDS3
 
 Algoritmos e Estruturas de Dados 3 - Trabalhos Práticos (UFMG)
 
-# Quickstart
+## Quickstart
 
 ## Example
 
-#### Code
+### Code
 
 ```c
-// code.c
+// main.c
 #include <stdio.h>
-int main()
+
+int main(void)
 {
   printf("Hello World!\n");
-  return 0;
 }
 ```
-#### Makefile
+### Makefile
 
 ```Makefile
-# Makefile
-all: hello
-hello: code.o
-  gcc code.o -o hello
-code.o:
-  gcc -c -Wall -Wextra -Werror -std=c99 -pedantic -g code.c
+C_OBJS = main.o
+CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
+LDFLAGS = -lm
+EXEC = example
+
+${EXEC}: ${C_OBJS}
+	${CC} -o $@ ${C_OBJS} ${LDFLAGS}
+
+main.o: main.c
+	${CC} -c $? ${CFLAGS}
+
+run:
+	./${EXEC}
+
 clean:
-  rm -rf *o hello
+	rm -f *.o ${EXEC}
 ```
 
-#### Compile
-
-    $ make
-    
-#### Run
-
-    $ ./hello
-    Hello World!
-
+### Compile
+```sh
+$ make
+```
+### Run
+```sh
+$ make run
+./example
+Hello World!
+```
 
 ## License
 

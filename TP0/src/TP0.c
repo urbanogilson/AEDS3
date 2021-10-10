@@ -3,76 +3,85 @@
 #include <stdbool.h>
 #include <string.h>
 #include "TP0.h"
-#define ALFABETO 26
 
-NO* cria_NO(char c)
+No *no_cria(char c)
 {
-	NO* no = (NO*) malloc(sizeof(NO));
+	No *no = (No *)malloc(sizeof(No));
+
 	if (no == NULL)
 	{
-		return 0;
+		return NULL;
 	}
+
 	no->palavra = 0;
 	no->letra = c;
 	no->ocorrencias = 0;
-	int i;
-	for (i = 0; i < ALFABETO; i++)
+
+	for (int i = 0; i < ALFABETO; i++)
 	{
-		no->Caracteres[i] = NULL;
+		no->caracteres[i] = NULL;
 	}
+
 	return no;
 }
 
-Trie* cria_Trie()
+Trie *trie_cria()
 {
-	Trie* raiz = (Trie*) malloc(sizeof(Trie));
+	Trie *raiz = (Trie *)malloc(sizeof(Trie));
+
 	if (raiz == NULL)
-	{	
-		printf("Erro na Alocacao\n");
-		return 0;
+	{
+		return NULL;
 	}
-	(*raiz) = cria_NO(' ');
+
+	(*raiz) = no_cria(' ');
+
 	return raiz;
 }
 
 /* Retorna um número de acordo a letra (casting)*/
 int indice_Trie(char c)
 {
-	int indice = (int)c - 97;
-	return indice;
+	return (int)c - (int)'a';
 }
 
 /* Insere nós na árvore Trie */
-int insere_Trie(Trie* raiz, char* texto)
+int trie_insere(Trie *raiz, char *texto)
 {
 	if (raiz == NULL)
 	{
 		return 0;
 	}
-	NO* atual = *raiz;
+
+	No *atual = *raiz;
 	int i = 0;
 	int tamanho_texto = strlen(texto);
 
-	while(atual->Caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
+	while (atual->caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
 	{
-		atual = atual->Caracteres[indice_Trie(texto[i])];
+		atual = atual->caracteres[indice_Trie(texto[i])];
+
 		if (tamanho_texto == 1)
 		{
 			atual->palavra = 1;
 		}
+
 		i++;
 		tamanho_texto--;
 	}
 
-	while(tamanho_texto > 0)
+	while (tamanho_texto > 0)
 	{
-		NO* novo = cria_NO(texto[i]);
-		atual->Caracteres[indice_Trie(texto[i])] = novo;
+		No *novo = no_cria(texto[i]);
+
+		atual->caracteres[indice_Trie(texto[i])] = novo;
+
 		atual = novo;
 		if (tamanho_texto == 1)
 		{
-			atual->palavra = 1;	
+			atual->palavra = 1;
 		}
+
 		i++;
 		tamanho_texto--;
 	}
@@ -80,44 +89,49 @@ int insere_Trie(Trie* raiz, char* texto)
 }
 
 /* Faz a busca da palavra do dicionário no texto e incrementa a ocorrencia da palavra */
-int busca_Trie(Trie* raiz, char* texto)
+int trie_busca(Trie *raiz, char *texto)
 {
 	if (raiz == NULL)
 	{
 		return 0;
 	}
-	NO* atual = *raiz;
+
+	No *atual = *raiz;
 	int i = 0;
 	int tamanho_texto = strlen(texto);
 
-	while(atual->Caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
+	while (atual->caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
 	{
-		atual = atual->Caracteres[indice_Trie(texto[i])];
+		atual = atual->caracteres[indice_Trie(texto[i])];
+
 		if (tamanho_texto == 1 && atual->palavra == 1 && atual->letra == texto[i])
 		{
 			atual->ocorrencias++;
 			return 1;
 		}
+
 		i++;
 		tamanho_texto--;
 	}
+
 	return 0;
 }
 
 /* Imprime as ocorrências */
-int ocorrencias_Trie(Trie* raiz, char* texto)
+int trie_ocorrencias(Trie *raiz, char *texto)
 {
 	if (raiz == NULL)
 	{
 		return 0;
 	}
-	NO* atual = *raiz;
+
+	No *atual = *raiz;
 	int i = 0;
 	int tamanho_texto = strlen(texto);
 
-	while(atual->Caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
+	while (atual->caracteres[indice_Trie(texto[i])] != NULL && tamanho_texto > 0)
 	{
-		atual = atual->Caracteres[indice_Trie(texto[i])];
+		atual = atual->caracteres[indice_Trie(texto[i])];
 		if (tamanho_texto == 1 && atual->palavra == 1 && atual->letra == texto[i])
 		{
 			printf("%d ", atual->ocorrencias);
@@ -130,28 +144,29 @@ int ocorrencias_Trie(Trie* raiz, char* texto)
 }
 
 /* Função recursiva que libera memória alocada dos nós */
-void libera_No(NO* no)
+void no_libera(No *no)
 {
 	if (no == NULL)
 	{
 		return;
 	}
-	int i;
-	for (i = 0; i < ALFABETO; ++i)
+
+	for (int i = 0; i < ALFABETO; ++i)
 	{
-		libera_No(no->Caracteres[i]);
+		no_libera(no->caracteres[i]);
 	}
+
 	free(no);
-	no = NULL;
 }
 
 /* Função recursiva que libera memória de toda a árvore Trie*/
-void libera_Trie(Trie* raiz)
+void trie_libera(Trie *raiz)
 {
 	if (raiz == NULL)
 	{
 		return;
 	}
-	libera_No(*raiz);
+
+	no_libera(*raiz);
 	free(raiz);
 }

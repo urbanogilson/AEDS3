@@ -1,13 +1,19 @@
-all:	TP0
+C_OBJS = main.o TP0.o
+CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
+LDFLAGS = -lm
+EXEC = TP0
 
-TP0:	main.o TP0.o
-	gcc main.o TP0.o -o TP0
+${EXEC}: ${C_OBJS}
+	${CC} -o $@ ${C_OBJS} ${LDFLAGS}
 
-main.o:
-	gcc -c main.c
+main.o: main.c
+	${CC} -c $? ${CFLAGS}
 
-TP0.o:
-	gcc -c TP0.c
+TP0.o: TP0.c
+	${CC} -c $? ${CFLAGS}
+
+run:
+	./${EXEC}
 
 clean:
-	rm -rf *o TP0
+	rm -f *.o ${EXEC}
