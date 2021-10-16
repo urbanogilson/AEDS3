@@ -1,24 +1,24 @@
-#ifndef TP0_H
-#define TP0_H
+#ifndef TP0_TP0_H_
+#define TP0_TP0_H_
 #define ALFABETO 26
+#include <stdbool.h>
 
-typedef struct No
-{
-	bool palavra;
-	char letra;
-	int ocorrencias;
-	struct No *caracteres[ALFABETO];
+typedef struct No {
+  bool palavra;
+  char letra;
+  int ocorrencias;
+  struct No *caracteres[ALFABETO];
 } No;
 
 typedef struct No *Trie;
 
-No *no_cria(char c);
-Trie *trie_cria();
-int trie_insere(Trie *raiz, char *texto);
-int trie_busca(Trie *raiz, char *texto);
-int trie_ocorrencias(Trie *raiz, char *texto);
-int trie_indice(char c);
-void no_libera(No *no);
-void trie_libera(Trie *raiz);
+No *NoCria(char c);
+Trie *TrieCria();
+int TrieInsere(Trie *raiz, char *texto);
+int TrieBusca(Trie *raiz, char *texto);
+int TrieOcorrencias(Trie *raiz, char *texto);
+int TrieIndice(char c);
+void NoLibera(No *no);
+void TrieLibera(Trie *raiz);
 
-#endif // TP0_H
+#endif  // TP0_TP0_H_
